@@ -150,6 +150,7 @@ func fileExists(p string) bool {
 // applyEnv overrides fields from TERMUX_MCP_* environment variables.
 func applyEnv(c *Config) {
 	setStr(&c.Auth.Token, os.Getenv("TERMUX_MCP_AUTH_TOKEN"))
+	setBool(&c.Auth.Require, os.Getenv("TERMUX_MCP_AUTH_REQUIRE"))
 	setStr(&c.Server.Mode, os.Getenv("TERMUX_MCP_SERVER_MODE"))
 	setStr(&c.Server.Bind, os.Getenv("TERMUX_MCP_SERVER_BIND"))
 	setInt(&c.Server.Port, os.Getenv("TERMUX_MCP_SERVER_PORT"))

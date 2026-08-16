@@ -30,9 +30,15 @@ Client config (`claude_desktop_config.json` / MCP settings):
 ## 2. Remote via cloudflared
 
 ```bash
+# The tunnel exposes the device publicly, so auth MUST be enforced:
+# set auth.require: true (and auth.token) in the config first.
 termux-mcp serve http &                    # loopback is enough
 termux-mcp tunnel start                    # prints https://xxx.trycloudflare.com
 ```
+
+`termux-mcp tunnel start` refuses to run unless `auth.token` is set **and**
+`auth.require: true` — tunnel traffic arrives from the local cloudflared
+proxy (loopback), so without `require: true` the token would not be checked.
 
 Client config:
 
@@ -47,8 +53,9 @@ Client config:
 }
 ```
 
-Any non-loopback bind or active tunnel **requires** `auth.token`; the server
-refuses to start without one.
+Any non-loopback bind **requires** `auth.token`; the server refuses to start
+without one. With `auth.require: false` (the default), on-device/loopback
+clients skip the token — set `auth.require: true` when serving remotely.
 
 ## 3. Hosts that only support stdio
 

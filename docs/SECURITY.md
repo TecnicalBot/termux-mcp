@@ -4,8 +4,10 @@
 
 - **Default-deny.** Sensitive and dangerous tool tiers are off until explicitly
   enabled. The shell tool is allowlist-only and disabled by default.
-- **Never expose without a token.** Binding a non-loopback address or running a
-  tunnel without `auth.token` is a startup error, not a warning.
+- **Never expose without a token.** Binding a non-loopback address without
+  `auth.token` is a startup error, not a warning. Tunnels additionally require
+  `auth.require: true` (tunnel traffic arrives from loopback, which is exempt
+  by default); `termux-mcp tunnel start` refuses to run otherwise.
 - **Least privilege per path.** File tools run inside a resolved-path sandbox;
   every command runs with a timeout and an output cap.
 

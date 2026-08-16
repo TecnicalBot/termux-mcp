@@ -78,15 +78,17 @@ func main() {
 		}
 
 	case "tunnel":
-		fs := flag.NewFlagSet("tunnel", flag.ExitOnError)
-		provider := fs.String("provider", "cloudflared", "cloudflared")
-		cfgPath := fs.String("config", envOr("TERMUX_MCP_CONFIG", ""), "path to config.yaml")
-		_ = fs.Parse(os.Args[2:])
-		if fs.NArg() > 0 && fs.Arg(0) == "start" {
-			runTunnel(*provider, *cfgPath)
+		rest := os.Args[2:]
+		if len(rest) > 0 && rest[0] == "start" {
+			rest = rest[1:] // strip subcommand so flags parse (flag stops at first non-flag)
 		} else {
 			usage()
 		}
+		fs := flag.NewFlagSet("tunnel", flag.ExitOnError)
+		provider := fs.String("provider", "cloudflared", "cloudflared")
+		cfgPath := fs.String("config", envOr("TERMUX_MCP_CONFIG", ""), "path to config.yaml")
+		_ = fs.Parse(rest)
+		runTunnel(*provider, *cfgPath)
 
 	default:
 		usage()
@@ -263,6 +265,15 @@ func runTunnel(provider, cfgPath string) {
 	cfg, err := config.Load(cfgPath)
 	if err != nil {
 		log.Fatalf("config: %v", err)
+	}
+	// A tunnel exposes the device to the public internet, and tunnel traffic
+	// arrives from the local cloudflared proxy (127.0.0.1), which the auth
+	// middleware treats as loopback. Loopback is only exempt when
+	// auth.require is false — so a tunnel MUST have the token enforced.
+	if cfg.Auth.Token == "" || !cfg.Auth.Require {
+		log.Fatalf("refusing to start a tunnel without enforced auth: " +
+			"set auth.require: true and auth.token in the config " +
+			"(generate a token with: termux-mcp token new --write)")
 	}
 	ctx, stop := signal.NotifyContext(context.Background(), os.Interrupt, syscall.SIGTERM)
 	defer stop()
