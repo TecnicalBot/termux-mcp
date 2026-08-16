@@ -1,0 +1,24 @@
+# Binaries
+/termux-mcp
+/bin/
+
+# Local config & state (secrets!)
+config.yaml
+*.local.yaml
+
+# Audit / log output
+*.jsonl
+*.log
+
+# Go
+go.sum.tmp
+coverage.out
+*.cover
+
+# Editor
+.idea/
+.vscode/
+*.swp
+
+# OS
+.DS_Store

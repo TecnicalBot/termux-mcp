@@ -1,0 +1,49 @@
+# termux-mcp configuration example.
+# Copy to $PREFIX/var/lib/termux-mcp/config.yaml and chmod 600.
+# Every field can be overridden by TERMUX_MCP_* environment variables.
+
+server:
+  # stdio (local) or http (LAN/remote via tunnel)
+  mode: stdio
+  # bind address for http mode. Non-loopback binds REQUIRE auth.token.
+  bind: 127.0.0.1
+  port: 3000
+  max_body_bytes: 1048576   # 1 MiB request cap
+  max_sessions: 32
+
+auth:
+  # Generate with: termux-mcp token new --write
+  token: ""
+  # true = require the token even on loopback (recommended when remote)
+  require: false
+
+tools:
+  # opt-in tiers: dangerous and sensitive tools are OFF by default
+  enable_sensitive: false
+  enable_dangerous: false
+  # per-tool allow/deny overrides (tool names)
+  allow: []
+  deny: []
+  # file sandbox roots for Module E (files). Defaults: $HOME and /sdcard
+  file_roots:
+    - /sdcard
+
+exec:
+  default_timeout_seconds: 30
+  max_output_bytes: 1048576   # 1 MiB per command output
+  # shell tool (execute_command) — allowlist-only, OFF by default
+  shell_allowed: false
+  shell_allow_patterns: []    # e.g. ["^ls ", "^df ", "^*"] to allow all
+  shell_deny_patterns: []     # e.g. ["rm -rf", "shutdown", "reboot"]
+  # background task logs (Module I): per-stream cap kept on disk
+  max_task_log_bytes: 8388608   # 8 MiB per stream
+
+audit:
+  enabled: true
+  # Defaults to $PREFIX/var/lib/termux-mcp on Termux (JSONL audit trail);
+  # an explicit path here always wins.
+  dir: ""
+
+logging:
+  level: info
+  json: false

@@ -1,0 +1,64 @@
+# Builds release binaries and creates a GitHub Release whenever a version
+# tag (vX.Y.Z) is pushed:
+#
+#   git tag v0.2.0
+#   git push origin v0.2.0
+#
+# Produces a release with auto-generated notes and one tarball per target
+# platform: arm64 (modern phones), arm (32-bit/older devices), amd64 (desktop).
+name: release
+
+on:
+  push:
+    tags:
+      - 'v*'
+  workflow_dispatch: # allow manual trigger for testing
+
+permissions:
+  contents: write # needed to create releases
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Go
+        uses: actions/setup-go@v5
+        with:
+          go-version-file: go.mod
+          cache: true
+
+      - name: Test
+        run: |
+          go vet ./...
+          go test ./...
+
+      - name: Build release binaries
+        run: |
+          set -euo pipefail
+          mkdir -p dist
+          for target in linux/arm64 linux/arm linux/amd64; do
+            os="${target%/*}"
+            arch="${target#*/}"
+            name="termux-mcp-${GITHUB_REF_NAME}-${os}-${arch}"
+            echo "building ${name} ..."
+            CGO_ENABLED=0 GOOS="$os" GOARCH="$arch" go build -trimpath \
+              -ldflags="-s -w -X termux-mcp/internal/version.Version=${GITHUB_REF_NAME}" \
+              -o "dist/${name}" ./cmd/termux-mcp
+          done
+          ls -la dist/
+
+      - name: Create GitHub release
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          # Attach the raw binaries directly — the installer downloads them
+          # as-is (no tarball needed; it already clones the repo for config
+          # template and boot script).
+          gh release create "$GITHUB_REF_NAME" dist/* \
+            --title "$GITHUB_REF_NAME" \
+            --generate-notes
