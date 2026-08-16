@@ -44,7 +44,10 @@ fi
 
 # --- 1. Packages -----------------------------------------------------------
 log "Installing/verifying packages..."
-pkg install -y termux-api || die "pkg install termux-api failed"
+# Non-fatal: the core server (stdio/shell/files/tasks) works without the
+# termux-api package; only the device-API tools need it.
+pkg install -y termux-api \
+  || warn "could not install termux-api — device-API tools (SMS, battery, camera, ...) will be unavailable (pkg install -y termux-api)"
 for opt in android-tools cloudflared; do
   if command -v "$opt" >/dev/null 2>&1; then
     log "$opt already installed"
@@ -55,17 +58,25 @@ for opt in android-tools cloudflared; do
 done
 
 # --- 2. Storage + API bridge ------------------------------------------------
-log "Granting storage access (follow the Android prompt if shown)..."
-termux-setup-storage || warn "termux-setup-storage failed — run it manually if /sdcard access is needed"
+if command -v termux-setup-storage >/dev/null 2>&1; then
+  log "Granting storage access (follow the Android prompt if shown)..."
+  termux-setup-storage || warn "termux-setup-storage failed — run it manually if /sdcard access is needed"
+else
+  warn "termux-api not installed — skipping storage grant (see message above)"
+fi
 
 log "Checking Termux:API bridge..."
-out="$(termux-battery-status 2>&1 || true)"
-if printf '%s' "$out" | grep -q '"level"'; then
-  log "termux-battery-status OK"
+if command -v termux-battery-status >/dev/null 2>&1; then
+  out="$(termux-battery-status 2>&1 || true)"
+  if printf '%s' "$out" | grep -q '"level"'; then
+    log "termux-battery-status OK"
+  else
+    warn "termux-battery-status returned: $(printf '%s' "$out" | head -1)"
+    warn "The Termux:API app must be installed from F-Droid (same store as Termux)"
+    warn "and granted permissions in Settings > Apps > Termux:API."
+  fi
 else
-  warn "termux-battery-status returned: $(printf '%s' "$out" | head -1)"
-  warn "The Termux:API app must be installed from F-Droid (same store as Termux)"
-  warn "and granted permissions in Settings > Apps > Termux:API."
+  warn "termux-battery-status missing — device-API tools will not work"
 fi
 
 # --- 3. Source / repo resolution -------------------------------------------
@@ -135,8 +146,11 @@ install_prebuilt() {
   fi
   [ -n "$tag" ] || return 1
 
-  # Raw binary asset, e.g. termux-mcp-v0.1.0-linux-arm64.
-  url="https://github.com/$slug/releases/download/$tag/termux-mcp-$tag-linux-$arch"
+  # Raw binary asset, e.g. termux-mcp-v0.1.0-android-arm64.
+  # GOOS=android (not linux) is required: Android's seccomp policy kills
+  # the faccessat2 syscall, and Go only applies the workaround for
+  # GOOS=android builds — a linux build crashes on Termux.
+  url="https://github.com/$slug/releases/download/$tag/termux-mcp-$tag-android-$arch"
   log "Downloading prebuilt $tag ($arch) ..."
   # Download to a temp name, then atomically move into place, so a failed
   # download never leaves a broken binary at the final path.
@@ -159,7 +173,9 @@ build_from_source() {
   log "Building termux-mcp from source ..."
   go mod tidy
   VERSION="$(git describe --tags --always --dirty 2>/dev/null || echo dev)"
-  go build -trimpath -ldflags="-s -w -X termux-mcp/internal/version.Version=$VERSION" \
+  # Explicit GOOS=android: required for the seccomp workarounds (see the
+  # prebuilt note above). Termux's go defaults to this, but be explicit.
+  GOOS=android go build -trimpath -ldflags="-s -w -X termux-mcp/internal/version.Version=$VERSION" \
     -o "$PREFIX/bin/termux-mcp" ./cmd/termux-mcp
   chmod +x "$PREFIX/bin/termux-mcp"
   log "Installed: $("$PREFIX/bin/termux-mcp" version)"
@@ -222,6 +238,11 @@ if [ "${TERMUX_MCP_BOOT:-yes}" = "yes" ]; then
   cp "$REPO_DIR/scripts/boot.sh" "$HOME/.termux/boot/start-mcp.sh"
   chmod +x "$HOME/.termux/boot/start-mcp.sh"
   log "Termux:Boot entry installed at ~/.termux/boot/start-mcp.sh"
+  # The entry is inert without the Termux:Boot app (an Android APK from
+  # F-Droid, not a Termux package). Detect it via Android's package manager.
+  if ! command -v pm >/dev/null 2>&1 || ! pm list packages 2>/dev/null | grep -q 'com.termux.boot'; then
+    warn "Termux:Boot app not detected — install it from F-Droid for the entry to run at boot"
+  fi
 fi
 
 log "Install complete. Verifying environment..."
