@@ -48,6 +48,7 @@ log "Installing/verifying packages..."
 # termux-api package; only the device-API tools need it.
 pkg install -y termux-api \
   || warn "could not install termux-api — device-API tools (SMS, battery, camera, ...) will be unavailable (pkg install -y termux-api)"
+pkg install -y git || die "pkg install git failed"
 for opt in android-tools cloudflared; do
   if command -v "$opt" >/dev/null 2>&1; then
     log "$opt already installed"
