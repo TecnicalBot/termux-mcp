@@ -1,5 +1,5 @@
-// Package shell implements Module G: arbitrary shell execution (dangerous
-// tier, disabled by default, allowlist-only).
+// Package shell implements Module G: shell execution (safe tier, enabled by
+// default; runtime gating via exec.shell_allowed and allow/deny patterns).
 package shell
 
 import (
@@ -22,10 +22,10 @@ const shellTimeout = 60 * time.Second
 func All(k *kit.Kit) []registry.Tool {
 	return []registry.Tool{
 		{Def: mcp.NewTool("execute_command",
-			mcp.WithDescription("Run a shell command. Disabled by default: requires exec.shell_allowed=true and at least one allow pattern in config."),
+			mcp.WithDescription("Run a shell command."),
 			mcp.WithString("command", mcp.Required(), mcp.Description("Shell command to run"))),
 			Handler: execute(k),
-			Meta:    registry.Meta{Module: "shell", Tier: registry.TierDangerous, Timeout: shellTimeout}},
+			Meta:    registry.Meta{Module: "shell", Tier: registry.TierSafe, Timeout: shellTimeout}},
 	}
 }
 
