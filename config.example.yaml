@@ -31,10 +31,11 @@ tools:
 exec:
   default_timeout_seconds: 30
   max_output_bytes: 1048576   # 1 MiB per command output
-  # shell tool (execute_command) — allowlist-only, OFF by default
-  shell_allowed: false
-  shell_allow_patterns: []    # e.g. ["^ls ", "^df ", "^*"] to allow all
-  shell_deny_patterns: []     # e.g. ["rm -rf", "shutdown", "reboot"]
+  # shell tool (execute_command) — ON by default with wildcard allowlist.
+  # Use shell_deny_patterns to block specific commands if needed.
+  shell_allowed: true
+  shell_allow_patterns: [".*"]  # allow all; narrow with e.g. ["^ls ", "^df "]
+  shell_deny_patterns: []       # e.g. ["rm -rf", "shutdown", "reboot"]
   # background task logs (Module I): per-stream cap kept on disk
   max_task_log_bytes: 8388608   # 8 MiB per stream
 

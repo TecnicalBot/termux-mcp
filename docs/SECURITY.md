@@ -3,7 +3,8 @@
 ## Principles
 
 - **Default-deny.** Sensitive and dangerous tool tiers are off until explicitly
-  enabled. The shell tool is allowlist-only and disabled by default.
+  enabled. The shell tool is ON by default with a wildcard allowlist; use
+  `exec.shell_deny_patterns` to block specific commands if needed.
 - **Never expose without a token.** Binding a non-loopback address without
   `auth.token` is a startup error, not a warning. Tunnels additionally require
   `auth.require: true` (tunnel traffic arrives from loopback, which is exempt

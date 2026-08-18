@@ -21,8 +21,8 @@ directory. Copy `config.example.yaml` and `chmod 600`.
 | `tools.file_roots` | `$HOME`, `/sdcard` | Filesystem sandbox roots |
 | `exec.default_timeout_seconds` | `30` | Per-command timeout |
 | `exec.max_output_bytes` | `1048576` | Per-command output cap |
-| `exec.shell_allowed` | `false` | Enable `execute_command` |
-| `exec.shell_allow_patterns` | `[]` | Required allowlist regexes |
+| `exec.shell_allowed` | `true` | Enable `execute_command` |
+| `exec.shell_allow_patterns` | `[".*"]` | Allowlist regexes (wildcard by default) |
 | `exec.shell_deny_patterns` | `[]` | Denylist regexes |
 | `audit.enabled` | `true` | Write `audit.jsonl` |
 | `audit.dir` | `$PREFIX/var/lib/termux-mcp` | Audit log directory |

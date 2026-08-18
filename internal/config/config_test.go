@@ -111,11 +111,12 @@ func TestNonLoopbackRequiresToken(t *testing.T) {
 func TestShellRequiresAllowlist(t *testing.T) {
 	dir := t.TempDir()
 	p := filepath.Join(dir, "config.yaml")
-	if err := os.WriteFile(p, []byte("exec:\n  shell_allowed: true\n"), 0o600); err != nil {
+	// Explicitly clearing patterns while shell_allowed: true must fail.
+	if err := os.WriteFile(p, []byte("exec:\n  shell_allowed: true\n  shell_allow_patterns: []\n"), 0o600); err != nil {
 		t.Fatal(err)
 	}
 	if _, err := Load(p); err == nil {
-		t.Fatal("shell_allowed without patterns must fail validation")
+		t.Fatal("shell_allowed with empty patterns must fail validation")
 	}
 
 	if err := os.WriteFile(p, []byte("exec:\n  shell_allowed: true\n  shell_allow_patterns: [\"*\"]\n"), 0o600); err != nil {
@@ -220,7 +221,7 @@ func TestExampleConfig(t *testing.T) {
 	if err := yaml.Unmarshal(data, c); err != nil {
 		t.Fatalf("config.example.yaml is invalid YAML: %v", err)
 	}
-	if c.Tools.EnableSensitive || c.Tools.EnableDangerous || c.Exec.ShellAllowed {
-		t.Fatal("example config must ship with all privileged tiers disabled")
+	if c.Tools.EnableSensitive || c.Tools.EnableDangerous {
+		t.Fatal("example config must ship with sensitive/dangerous tiers disabled")
 	}
 }

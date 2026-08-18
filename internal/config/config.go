@@ -74,6 +74,8 @@ func Default() *Config {
 	c.Exec.DefaultTimeoutSeconds = 30
 	c.Exec.MaxOutputBytes = 1 << 20  // 1 MiB
 	c.Exec.MaxTaskLogBytes = 8 << 20 // 8 MiB per stream
+	c.Exec.ShellAllowed = true
+	c.Exec.ShellAllowPatterns = []string{".*"}
 	c.Audit.Enabled = true
 	c.Audit.Dir = defaultDataDir()
 	c.Logging.Level = "info"
