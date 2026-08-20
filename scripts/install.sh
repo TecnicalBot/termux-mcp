@@ -61,20 +61,32 @@ done
 # --- 2. Storage + API bridge ------------------------------------------------
 if command -v termux-setup-storage >/dev/null 2>&1; then
   log "Granting storage access (follow the Android prompt if shown)..."
-  termux-setup-storage || warn "termux-setup-storage failed — run it manually if /sdcard access is needed"
+  if ! timeout 10 termux-setup-storage 2>/dev/null; then
+    warn "termux-setup-storage timed out or failed — run it manually if /sdcard access is needed"
+  fi
 else
   warn "termux-api not installed — skipping storage grant (see message above)"
 fi
 
 log "Checking Termux:API bridge..."
 if command -v termux-battery-status >/dev/null 2>&1; then
-  out="$(termux-battery-status 2>&1 || true)"
+  out="$(timeout 10 termux-battery-status 2>&1 || true)"
   if printf '%s' "$out" | grep -q '"level"'; then
     log "termux-battery-status OK"
+  elif [ -z "$out" ]; then
+    warn "termux-battery-status timed out — the API bridge is not responding."
+    warn ""
+    warn "  1. Install Termux:API app from F-Droid (NOT Google Play)."
+    warn "  2. Open the Termux:API app once and grant all permissions."
+    warn "  3. Xiaomi / MIUI / POCO:  Settings > Apps > Manage apps"
+    warn "     > Termux:API > Battery saver > No restrictions"
+    warn "     Also check: Settings > Battery > Protected apps > enable Termux:API"
+    warn "  4. Android 14+: update both Termux and Termux:API from F-Droid."
+    warn "  5. Still stuck? Run manually: termux-battery-status"
+    warn "     See: https://wiki.termux.com/wiki/Termux:API"
   else
     warn "termux-battery-status returned: $(printf '%s' "$out" | head -1)"
-    warn "The Termux:API app must be installed from F-Droid (same store as Termux)"
-    warn "and granted permissions in Settings > Apps > Termux:API."
+    warn "The Termux:API app may need permissions — open it and grant all."
   fi
 else
   warn "termux-battery-status missing — device-API tools will not work"
