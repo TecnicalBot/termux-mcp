@@ -2,6 +2,11 @@
 
 A MCP to connect Termux to any AI apps/agents of your choice like Mobile Agent ChatGPT, Claude, or any other
 
+## Demo
+
+[![Termux MCP demo](https://img.youtube.com/vi/nLKPv9LPL1Y/maxresdefault.jpg)](https://youtu.be/nLKPv9LPL1Y?si=myEdb6Akhl9OaUEH)
+
+
 ## Features
 
 - **9 tool modules** — battery, SMS, camera, clipboard, files, UI automation,
