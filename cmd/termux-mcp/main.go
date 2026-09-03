@@ -32,6 +32,7 @@ import (
 	"termux-mcp/internal/exec"
 	"termux-mcp/internal/registry"
 	"termux-mcp/internal/server"
+	"termux-mcp/internal/tasks"
 	"termux-mcp/internal/tools"
 	"termux-mcp/internal/tunnel"
 	vpkg "termux-mcp/internal/version"
@@ -168,8 +169,10 @@ func buildServer(mode, cfgPath string) (*serverContext, error) {
 		al = audit.Disabled()
 	}
 
+	mgr := tasks.New(filepath.Join(cfg.Audit.Dir, "tasks"), 8, cfg.Exec.MaxTaskLogBytes)
+
 	reg := registry.New()
-	if err := tools.RegisterAll(reg, cfg, al); err != nil {
+	if err := tools.RegisterAll(reg, cfg, al, mgr); err != nil {
 		return nil, err
 	}
 	enabled := len(reg.Names(&cfg.Tools))
@@ -179,13 +182,14 @@ func buildServer(mode, cfgPath string) (*serverContext, error) {
 	// Keep the device awake while serving (best effort, ignore failure).
 	_ = takeWakeLock()
 
-	return &serverContext{cfg: cfg, al: al, reg: reg}, nil
+	return &serverContext{cfg: cfg, al: al, reg: reg, tasks: mgr}, nil
 }
 
 type serverContext struct {
-	cfg *config.Config
-	al  *audit.Logger
-	reg *registry.Registry
+	cfg   *config.Config
+	al    *audit.Logger
+	reg   *registry.Registry
+	tasks *tasks.Manager
 }
 
 func runServe(mode, cfgPath string) {
@@ -202,7 +206,7 @@ func runServe(mode, cfgPath string) {
 			log.Fatalf("stdio: %v", err)
 		}
 	case "http":
-		if err := server.RunHTTP(srv, sc.cfg); err != nil {
+		if err := server.RunHTTP(srv, sc.cfg, sc.tasks); err != nil {
 			log.Fatalf("http: %v", err)
 		}
 	}

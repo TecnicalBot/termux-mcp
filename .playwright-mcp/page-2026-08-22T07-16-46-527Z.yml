@@ -1,0 +1,276 @@
+- generic [active] [ref=f2e1]:
+  - generic:
+    - generic:
+      - link "Skip to main content" [ref=f2e2] [cursor=pointer]
+      - link "Accessibility help" [ref=f2e3] [cursor=pointer]:
+        - /url: https://support.google.com/websearch/answer/181196?hl=en-IN
+  - generic [ref=f2e8]:
+    - search [ref=f2e9]:
+      - generic [ref=f2e12]:
+        - link [ref=f2e13] [cursor=pointer]:
+          - /url: https://www.google.com/webhp?hl=en&ictx=0&sa=X&ved=0ahUKEwi_sobJ2LOWAxU7HNAFHf63C_0QpYkNCAo
+          - img "Go to Google Home" [ref=f2e14]
+        - generic [ref=f2e19]:
+          - combobox "Search" [ref=f2e22]: site:docs.github.com contributors graph update cache hours GitHub site:docs.github.com contributors graph update cache hours GitHub
+          - generic [ref=f2e23]:
+            - button "Clear" [ref=f2e25] [cursor=pointer]
+            - generic [ref=f2e30]:
+              - button "Search by voice" [ref=f2e31] [cursor=pointer]
+              - button "Search by image" [ref=f2e34] [cursor=pointer]
+        - button "Search" [ref=f2e37] [cursor=pointer]
+    - generic [ref=f2e42]:
+      - button "Settings" [ref=f2e44] [cursor=pointer]
+      - button "Share" [ref=f2e50] [cursor=pointer]
+      - generic [ref=f2e56]:
+        - button "Google apps" [ref=f2e58] [cursor=pointer]
+        - link "Sign in" [ref=f2e63] [cursor=pointer]:
+          - /url: https://accounts.google.com/ServiceLogin?hl=en&passive=true&continue=https://www.google.com/search%3Fq%3Dsite%253Adocs.github.com%2Bcontributors%2Bgraph%2Bupdate%2Bcache%2Bhours%2BGitHub%26sei%3D3UyJapahAabCp84P96P5oAo&ec=futura_srp_og_si_72236_p
+  - generic [ref=f2e65]:
+    - navigation [ref=f2e71]:
+      - generic [ref=f2e77]:
+        - list [ref=f2e78]:
+          - listitem [ref=f2e79]:
+            - link "AI Mode" [ref=f2e82] [cursor=pointer]:
+              - /url: /search?q=site:docs.github.com+contributors+graph+update+cache+hours+GitHub&sca_esv=6193f360bd916b00&udm=50&fbs=ABfTbFVyMZGZf1hfvX9uKjN_-G8c4u0nXx4bEIpwm1lnNH832QufJlY6zJud3Z__pVf55T9h1SQFki2XCYpJtchR_BvDwSZuvVLeqVf0EpSkggN66qbsjfPirx2L6iTAjgpalalEc-XZXXuTa9S9kqgjz2QYpuWtOenyv9YDNFi6cBS588GoA8tR8y0BdtBoC8FA5PuXfq_TKp4pHFp-lcHGwXzRx8hN8Q&aep=1&ntc=1&cs=0&sa=X&ved=2ahUKEwi_sobJ2LOWAxU7HNAFHf63C_0Q2J8OegQIEhAD
+          - listitem [ref=f2e86]:
+            - link "All" [disabled] [ref=f2e87]
+          - listitem [ref=f2e90]:
+            - link "Images" [ref=f2e91] [cursor=pointer]:
+              - /url: /search?sca_esv=6193f360bd916b00&udm=2&fbs=ABfTbFVyMZGZf1hfvX9uKjN_-G8c4u0nXx4bEIpwm1lnNH832QufJlY6zJud3Z__pVf55T9h1SQFki2XCYpJtchR_BvDwSZuvVLeqVf0EpSkggN66qbsjfPirx2L6iTAjgpalalEc-XZXXuTa9S9kqgjz2QYpuWtOenyv9YDNFi6cBS588GoA8tR8y0BdtBoC8FA5PuXfq_TKp4pHFp-lcHGwXzRx8hN8Q&q=site:docs.github.com+contributors+graph+update+cache+hours+GitHub&sa=X&ved=2ahUKEwi_sobJ2LOWAxU7HNAFHf63C_0QtKgLegQIFBAB
+          - listitem [ref=f2e94]:
+            - link "Forums" [ref=f2e95] [cursor=pointer]:
+              - /url: /search?sca_esv=6193f360bd916b00&udm=18&fbs=ABfTbFVyMZGZf1hfvX9uKjN_-G8c4u0nXx4bEIpwm1lnNH832QufJlY6zJud3Z__pVf55T9h1SQFki2XCYpJtchR_BvDwSZuvVLeqVf0EpSkggN66qbsjfPirx2L6iTAjgpalalEc-XZXXuTa9S9kqgjz2QYpuWtOenyv9YDNFi6cBS588GoA8tR8y0BdtBoC8FA5PuXfq_TKp4pHFp-lcHGwXzRx8hN8Q&q=site:docs.github.com+contributors+graph+update+cache+hours+GitHub&sa=X&ved=2ahUKEwi_sobJ2LOWAxU7HNAFHf63C_0Qs6gLegQIFhAB
+          - listitem [ref=f2e98]:
+            - link "Shopping" [ref=f2e99] [cursor=pointer]:
+              - /url: /search?sca_esv=6193f360bd916b00&udm=28&fbs=ABfTbFVyMZGZf1hfvX9uKjN_-G8c4u0nXx4bEIpwm1lnNH832QufJlY6zJud3Z__pVf55T9h1SQFki2XCYpJtchR_BvDwSZuvVLeqVf0EpSkggN66qbsjfPirx2L6iTAjgpalalEc-XZXXuTa9S9kqgjz2QYpuWtOenyv9YDNFi6cBS588GoA8tR8y0BdtBoC8FA5PuXfq_TKp4pHFp-lcHGwXzRx8hN8Q&q=site:docs.github.com+contributors+graph+update+cache+hours+GitHub&ved=1t:220175&ictx=111
+          - listitem [ref=f2e102]:
+            - link "Videos" [ref=f2e103] [cursor=pointer]:
+              - /url: /search?sca_esv=6193f360bd916b00&udm=7&fbs=ABfTbFVyMZGZf1hfvX9uKjN_-G8c4u0nXx4bEIpwm1lnNH832QufJlY6zJud3Z__pVf55T9h1SQFki2XCYpJtchR_BvDwSZuvVLeqVf0EpSkggN66qbsjfPirx2L6iTAjgpalalEc-XZXXuTa9S9kqgjz2QYpuWtOenyv9YDNFi6cBS588GoA8tR8y0BdtBoC8FA5PuXfq_TKp4pHFp-lcHGwXzRx8hN8Q&q=site:docs.github.com+contributors+graph+update+cache+hours+GitHub&sa=X&ved=2ahUKEwi_sobJ2LOWAxU7HNAFHf63C_0QtKgLegQIFxAB
+          - listitem [ref=f2e106]:
+            - link "Short videos" [ref=f2e107] [cursor=pointer]:
+              - /url: /search?sca_esv=6193f360bd916b00&udm=39&fbs=ABfTbFVyMZGZf1hfvX9uKjN_-G8c4u0nXx4bEIpwm1lnNH832QufJlY6zJud3Z__pVf55T9h1SQFki2XCYpJtchR_BvDwSZuvVLeqVf0EpSkggN66qbsjfPirx2L6iTAjgpalalEc-XZXXuTa9S9kqgjz2QYpuWtOenyv9YDNFi6cBS588GoA8tR8y0BdtBoC8FA5PuXfq_TKp4pHFp-lcHGwXzRx8hN8Q&q=site:docs.github.com+contributors+graph+update+cache+hours+GitHub&sa=X&ved=2ahUKEwi_sobJ2LOWAxU7HNAFHf63C_0Qs6gLegQIGBAB
+          - listitem [ref=f2e110]:
+            - button [ref=f2e111] [cursor=pointer]:
+              - generic "More filters" [ref=f2e112]: More
+        - button "Tools" [ref=f2e119] [cursor=pointer]
+    - heading "Search Results" [level=1] [ref=f2e126]
+    - main [ref=f2e132]:
+      - generic [ref=f2e136]:
+        - generic [ref=f2e139]:
+          - heading "Web results" [level=2] [ref=f2e140]
+          - generic [ref=f2e141]:
+            - generic [ref=f2e144]:
+              - link "Viewing contributions on your profile GitHub Docs https://docs.github.com › account-and-profile › how-tos" [ref=f2e146] [cursor=pointer]:
+                - /url: https://docs.github.com/en/account-and-profile/how-tos/contribution-settings/viewing-contributions-on-your-profile
+                - heading "Viewing contributions on your profile" [level=3] [ref=f2e147]
+                - generic [ref=f2e153]:
+                  - generic [ref=f2e154]: GitHub Docs
+                  - generic [ref=f2e156]: https://docs.github.com › account-and-profile › how-tos
+              - button "About this result" [ref=f2e162] [cursor=pointer]
+            - generic [ref=f2e169]:
+              - text: To see a timeline of your
+              - emphasis [ref=f2e170]: contributions
+              - text: ", starting with your most recent work, scroll down to the \""
+              - emphasis [ref=f2e171]: Contribution
+              - text: activity" section of the page.
+        - generic [ref=f2e175]:
+          - generic [ref=f2e178]:
+            - link "REST API endpoints for repository statistics GitHub Docs https://docs.github.com › rest › metrics › statistics" [ref=f2e180] [cursor=pointer]:
+              - /url: https://docs.github.com/en/rest/metrics/statistics
+              - heading "REST API endpoints for repository statistics" [level=3] [ref=f2e181]
+              - generic [ref=f2e187]:
+                - generic [ref=f2e188]: GitHub Docs
+                - generic [ref=f2e190]: https://docs.github.com › rest › metrics › statistics
+            - button "About this result" [ref=f2e196] [cursor=pointer]
+          - generic [ref=f2e202]:
+            - generic [ref=f2e203]:
+              - text: About repository statistics. You can use the REST API to fetch the data that
+              - emphasis [ref=f2e204]: GitHub
+              - text: uses for visualizing different types of repository activity.
+            - link "Read more" [ref=f2e205] [cursor=pointer]:
+              - /url: https://docs.github.com/en/rest/metrics/statistics#:~:text=About%20repository%20statistics,different%20types%20of%20repository%20activity.
+        - generic [ref=f2e209]:
+          - generic [ref=f2e212]:
+            - link "GitHub glossary - GitHub Enterprise Server 3.22 Docs GitHub Docs https://docs.github.com › learning-about-github › githu..." [ref=f2e214] [cursor=pointer]:
+              - /url: https://docs.github.com/en/enterprise-server@3.22/get-started/learning-about-github/github-glossary
+              - heading "GitHub glossary - GitHub Enterprise Server 3.22 Docs" [level=3] [ref=f2e215]
+              - generic [ref=f2e221]:
+                - generic [ref=f2e222]: GitHub Docs
+                - generic [ref=f2e224]: https://docs.github.com › learning-about-github › githu...
+            - button "About this result" [ref=f2e230] [cursor=pointer]
+          - generic [ref=f2e236]:
+            - generic [ref=f2e237]:
+              - emphasis [ref=f2e238]: contribution graph
+              - text: . The part of a user's profile that shows their
+              - emphasis [ref=f2e239]: contributions
+              - text: over a period of up to one year, day by day.
+              - emphasis [ref=f2e240]: contribution
+              - text: guidelines.
+            - link "Read more" [ref=f2e241] [cursor=pointer]:
+              - /url: https://docs.github.com/en/enterprise-server@3.22/get-started/learning-about-github/github-glossary#:~:text=contribution%20graph,contribution%20guidelines
+        - generic [ref=f2e245]:
+          - generic [ref=f2e248]:
+            - link "Enabling unified contributions for your enterprise GitHub Docs https://docs.github.com › configuring-github-connect" [ref=f2e250] [cursor=pointer]:
+              - /url: https://docs.github.com/en/enterprise-server@3.17/admin/configuring-settings/configuring-github-connect/enabling-unified-contributions-for-your-enterprise
+              - heading "Enabling unified contributions for your enterprise" [level=3] [ref=f2e251]
+              - generic [ref=f2e257]:
+                - generic [ref=f2e258]: GitHub Docs
+                - generic [ref=f2e260]: https://docs.github.com › configuring-github-connect
+            - button "About this result" [ref=f2e266] [cursor=pointer]
+          - generic [ref=f2e273]:
+            - emphasis [ref=f2e274]: GitHub
+            - text: requests
+            - emphasis [ref=f2e275]: updates
+            - text: hourly using
+            - emphasis [ref=f2e276]: GitHub
+            - text: Connect. the
+            - emphasis [ref=f2e277]: contribution
+            - text: counts for the past 90 days are restored.
+        - generic [ref=f2e281]:
+          - generic [ref=f2e284]:
+            - link "REST API endpoints for repositories GitHub Docs https://docs.github.com › rest › repos › repos" [ref=f2e286] [cursor=pointer]:
+              - /url: https://docs.github.com/rest/repos/repos
+              - heading "REST API endpoints for repositories" [level=3] [ref=f2e287]
+              - generic [ref=f2e293]:
+                - generic [ref=f2e294]: GitHub Docs
+                - generic [ref=f2e296]: https://docs.github.com › rest › repos › repos
+            - button "About this result" [ref=f2e302] [cursor=pointer]
+          - generic [ref=f2e309]:
+            - text: This endpoint may return information that is a few
+            - emphasis [ref=f2e310]: hours
+            - text: old because the
+            - emphasis [ref=f2e311]: GitHub
+            - text: REST API
+            - emphasis [ref=f2e312]: caches contributor
+            - text: data to improve performance.
+        - generic [ref=f2e316]:
+          - generic [ref=f2e319]:
+            - link "REST API endpoints for API Insights GitHub Docs https://docs.github.com › rest › orgs › api-insights" [ref=f2e321] [cursor=pointer]:
+              - /url: https://docs.github.com/en/rest/orgs/api-insights?apiVersion=2026-03-10
+              - heading "REST API endpoints for API Insights" [level=3] [ref=f2e322]
+              - generic [ref=f2e328]:
+                - generic [ref=f2e329]: GitHub Docs
+                - generic [ref=f2e331]: https://docs.github.com › rest › orgs › api-insights
+            - button "About this result" [ref=f2e337] [cursor=pointer]
+          - generic [ref=f2e343]:
+            - generic [ref=f2e344]: 10 Mar 2026 —
+            - generic [ref=f2e345]:
+              - text: Under normal conditions, you can expect API data to appear within 4–6
+              - emphasis [ref=f2e346]: hours
+              - text: after making a request. Under normal conditions, you can expect API ...
+        - generic [ref=f2e350]:
+          - generic [ref=f2e353]:
+            - link "Rate limits for the REST API GitHub Docs https://docs.github.com › rest › rate-limits-for-the-rest-api" [ref=f2e355] [cursor=pointer]:
+              - /url: https://docs.github.com/rest/using-the-rest-api/rate-limits-for-the-rest-api
+              - heading "Rate limits for the REST API" [level=3] [ref=f2e356]
+              - generic [ref=f2e362]:
+                - generic [ref=f2e363]: GitHub Docs
+                - generic [ref=f2e365]: https://docs.github.com › rest › rate-limits-for-the-rest-api
+            - button "About this result" [ref=f2e371] [cursor=pointer]
+          - generic [ref=f2e378]:
+            - emphasis [ref=f2e379]: GitHub
+            - text: limits the number of REST API requests that you can make within a specific amount of time. The primary rate limit for unauthenticated requests is 60 ...
+        - generic [ref=f2e383]:
+          - generic [ref=f2e386]:
+            - link "Repository limits GitHub Docs https://docs.github.com › repositories › repository-limits" [ref=f2e388] [cursor=pointer]:
+              - /url: https://docs.github.com/en/repositories/creating-and-managing-repositories/repository-limits
+              - heading "Repository limits" [level=3] [ref=f2e389]
+              - generic [ref=f2e395]:
+                - generic [ref=f2e396]: GitHub Docs
+                - generic [ref=f2e398]: https://docs.github.com › repositories › repository-limits
+            - button "About this result" [ref=f2e404] [cursor=pointer]
+          - generic [ref=f2e409]: The recommended maximum limit is 15 operations per second per repository. The recommended maximum limit is 6 pushes per minute per repository. 100,000 ...
+        - generic [ref=f2e414]:
+          - generic [ref=f2e417]:
+            - link "Dependency caching reference GitHub Docs https://docs.github.com › workflows-and-actions › depe..." [ref=f2e419] [cursor=pointer]:
+              - /url: https://docs.github.com/en/actions/reference/workflows-and-actions/dependency-caching
+              - heading "Dependency caching reference" [level=3] [ref=f2e420]
+              - generic [ref=f2e426]:
+                - generic [ref=f2e427]: GitHub Docs
+                - generic [ref=f2e429]: https://docs.github.com › workflows-and-actions › depe...
+            - button "About this result" [ref=f2e435] [cursor=pointer]
+          - generic [ref=f2e441]:
+            - generic [ref=f2e442]:
+              - text: If there is an exact match to the provided key , this is considered a
+              - emphasis [ref=f2e443]: cache
+              - text: hit. If no
+              - emphasis [ref=f2e444]: cache
+              - text: exactly matches the provided key , this is considered a
+              - emphasis [ref=f2e445]: cache
+              - text: miss.
+            - link "Read more" [ref=f2e446] [cursor=pointer]:
+              - /url: https://docs.github.com/en/actions/reference/workflows-and-actions/dependency-caching#:~:text=If%20there%20is%20an%20exact,is%20considered%20a%20cache%20miss.
+        - generic [ref=f2e450]:
+          - generic [ref=f2e453]:
+            - link "Check system capacity before upgrading GitHub Docs https://docs.github.com › admin › preparing-to-upgrade" [ref=f2e455] [cursor=pointer]:
+              - /url: https://docs.github.com/en/enterprise-server@3.19/admin/upgrading-your-instance/preparing-to-upgrade/check-system-capacity-before-upgrading
+              - heading "Check system capacity before upgrading" [level=3] [ref=f2e456]
+              - generic [ref=f2e462]:
+                - generic [ref=f2e463]: GitHub Docs
+                - generic [ref=f2e465]: https://docs.github.com › admin › preparing-to-upgrade
+            - button "About this result" [ref=f2e471] [cursor=pointer]
+          - generic [ref=f2e477]:
+            - generic [ref=f2e478]:
+              - text: This
+              - emphasis [ref=f2e479]: graph
+              - text: is available in the "System & Application Insights" view. Interpret the results. If the backlog lasts less than 1–2
+              - emphasis [ref=f2e480]: hours
+              - text: ", you meet this requirement."
+            - link "Read more" [ref=f2e481] [cursor=pointer]:
+              - /url: https://docs.github.com/en/enterprise-server@3.19/admin/upgrading-your-instance/preparing-to-upgrade/check-system-capacity-before-upgrading#:~:text=This%20graph%20is%20available%20in,hours%2C%20you%20meet%20this%20requirement.
+      - navigation [ref=f2e484]:
+        - heading "Page navigation" [level=1] [ref=f2e485]
+        - text: "1"
+        - link "Page 2" [ref=f2e488] [cursor=pointer]:
+          - /url: /search?q=site:docs.github.com+contributors+graph+update+cache+hours+GitHub&sca_esv=6193f360bd916b00&ei=3UyJav_PKbu4wN4P_u-u6A8&start=10&sa=N&sstk=AS6-VmKuujUuaT6xFl54NoQYL6-npLIQlAOCpQ3ZQyfnny5OGBt5bR8xztXIOhkaMRLmSiCEtys4WYBXJsYqbNwpCwfe6OxmuR0_qQ&ved=2ahUKEwi_sobJ2LOWAxU7HNAFHf63C_0Q8tMDegQIMBAE
+          - text: "2"
+        - link "Page 3" [ref=f2e490] [cursor=pointer]:
+          - /url: /search?q=site:docs.github.com+contributors+graph+update+cache+hours+GitHub&sca_esv=6193f360bd916b00&ei=3UyJav_PKbu4wN4P_u-u6A8&start=20&sa=N&sstk=AS6-VmKuujUuaT6xFl54NoQYL6-npLIQlAOCpQ3ZQyfnny5OGBt5bR8xztXIOhkaMRLmSiCEtys4WYBXJsYqbNwpCwfe6OxmuR0_qQ&ved=2ahUKEwi_sobJ2LOWAxU7HNAFHf63C_0Q8tMDegQIMBAG
+          - text: "3"
+        - link "Page 4" [ref=f2e492] [cursor=pointer]:
+          - /url: /search?q=site:docs.github.com+contributors+graph+update+cache+hours+GitHub&sca_esv=6193f360bd916b00&ei=3UyJav_PKbu4wN4P_u-u6A8&start=30&sa=N&sstk=AS6-VmKuujUuaT6xFl54NoQYL6-npLIQlAOCpQ3ZQyfnny5OGBt5bR8xztXIOhkaMRLmSiCEtys4WYBXJsYqbNwpCwfe6OxmuR0_qQ&ved=2ahUKEwi_sobJ2LOWAxU7HNAFHf63C_0Q8tMDegQIMBAI
+          - text: "4"
+        - link "Page 5" [ref=f2e494] [cursor=pointer]:
+          - /url: /search?q=site:docs.github.com+contributors+graph+update+cache+hours+GitHub&sca_esv=6193f360bd916b00&ei=3UyJav_PKbu4wN4P_u-u6A8&start=40&sa=N&sstk=AS6-VmKuujUuaT6xFl54NoQYL6-npLIQlAOCpQ3ZQyfnny5OGBt5bR8xztXIOhkaMRLmSiCEtys4WYBXJsYqbNwpCwfe6OxmuR0_qQ&ved=2ahUKEwi_sobJ2LOWAxU7HNAFHf63C_0Q8tMDegQIMBAK
+          - text: "5"
+        - link "Page 6" [ref=f2e496] [cursor=pointer]:
+          - /url: /search?q=site:docs.github.com+contributors+graph+update+cache+hours+GitHub&sca_esv=6193f360bd916b00&ei=3UyJav_PKbu4wN4P_u-u6A8&start=50&sa=N&sstk=AS6-VmKuujUuaT6xFl54NoQYL6-npLIQlAOCpQ3ZQyfnny5OGBt5bR8xztXIOhkaMRLmSiCEtys4WYBXJsYqbNwpCwfe6OxmuR0_qQ&ved=2ahUKEwi_sobJ2LOWAxU7HNAFHf63C_0Q8tMDegQIMBAM
+          - text: "6"
+        - link "Page 7" [ref=f2e498] [cursor=pointer]:
+          - /url: /search?q=site:docs.github.com+contributors+graph+update+cache+hours+GitHub&sca_esv=6193f360bd916b00&ei=3UyJav_PKbu4wN4P_u-u6A8&start=60&sa=N&sstk=AS6-VmKuujUuaT6xFl54NoQYL6-npLIQlAOCpQ3ZQyfnny5OGBt5bR8xztXIOhkaMRLmSiCEtys4WYBXJsYqbNwpCwfe6OxmuR0_qQ&ved=2ahUKEwi_sobJ2LOWAxU7HNAFHf63C_0Q8tMDegQIMBAO
+          - text: "7"
+        - link "Page 8" [ref=f2e500] [cursor=pointer]:
+          - /url: /search?q=site:docs.github.com+contributors+graph+update+cache+hours+GitHub&sca_esv=6193f360bd916b00&ei=3UyJav_PKbu4wN4P_u-u6A8&start=70&sa=N&sstk=AS6-VmKuujUuaT6xFl54NoQYL6-npLIQlAOCpQ3ZQyfnny5OGBt5bR8xztXIOhkaMRLmSiCEtys4WYBXJsYqbNwpCwfe6OxmuR0_qQ&ved=2ahUKEwi_sobJ2LOWAxU7HNAFHf63C_0Q8tMDegQIMBAQ
+          - text: "8"
+        - link "Page 9" [ref=f2e502] [cursor=pointer]:
+          - /url: /search?q=site:docs.github.com+contributors+graph+update+cache+hours+GitHub&sca_esv=6193f360bd916b00&ei=3UyJav_PKbu4wN4P_u-u6A8&start=80&sa=N&sstk=AS6-VmKuujUuaT6xFl54NoQYL6-npLIQlAOCpQ3ZQyfnny5OGBt5bR8xztXIOhkaMRLmSiCEtys4WYBXJsYqbNwpCwfe6OxmuR0_qQ&ved=2ahUKEwi_sobJ2LOWAxU7HNAFHf63C_0Q8tMDegQIMBAS
+          - text: "9"
+        - link "Page 10" [ref=f2e504] [cursor=pointer]:
+          - /url: /search?q=site:docs.github.com+contributors+graph+update+cache+hours+GitHub&sca_esv=6193f360bd916b00&ei=3UyJav_PKbu4wN4P_u-u6A8&start=90&sa=N&sstk=AS6-VmKuujUuaT6xFl54NoQYL6-npLIQlAOCpQ3ZQyfnny5OGBt5bR8xztXIOhkaMRLmSiCEtys4WYBXJsYqbNwpCwfe6OxmuR0_qQ&ved=2ahUKEwi_sobJ2LOWAxU7HNAFHf63C_0Q8tMDegQIMBAU
+          - text: "10"
+        - heading [level=2] [ref=f2e506]:
+          - link "Next" [ref=f2e507] [cursor=pointer]:
+            - /url: /search?q=site:docs.github.com+contributors+graph+update+cache+hours+GitHub&sca_esv=6193f360bd916b00&ei=3UyJav_PKbu4wN4P_u-u6A8&start=10&sa=N&sstk=AS6-VmKuujUuaT6xFl54NoQYL6-npLIQlAOCpQ3ZQyfnny5OGBt5bR8xztXIOhkaMRLmSiCEtys4WYBXJsYqbNwpCwfe6OxmuR0_qQ&ved=2ahUKEwi_sobJ2LOWAxU7HNAFHf63C_0Q8NMDegQIMBAW
+      - navigation
+    - contentinfo [ref=f2e510]:
+      - heading "Footer links" [level=1] [ref=f2e511]
+      - generic [ref=f2e515]:
+        - generic [ref=f2e517]:
+          - text: India
+          - generic [ref=f2e519]:
+            - button "Mumbai, Maharashtra - From your IP address" [ref=f2e521] [cursor=pointer]:
+              - generic [ref=f2e522]: Mumbai, Maharashtra
+              - generic [ref=f2e524]:
+                - text: "-"
+                - generic [ref=f2e525]: From your IP address
+            - text: "-"
+            - button "Update location" [ref=f2e527] [cursor=pointer]
+        - generic [ref=f2e530]:
+          - link "Help" [ref=f2e531] [cursor=pointer]:
+            - /url: https://support.google.com/websearch/?p=ws_results_help&hl=en-IN&fg=1
+          - link "Send feedback" [ref=f2e532] [cursor=pointer]:
+            - /url: "#"
+          - link "Privacy" [ref=f2e533] [cursor=pointer]:
+            - /url: https://policies.google.com/privacy?hl=en-IN&fg=1
+          - link "Terms" [ref=f2e534] [cursor=pointer]:
+            - /url: https://policies.google.com/terms?hl=en-IN&fg=1

@@ -2,8 +2,6 @@
 package tools
 
 import (
-	"path/filepath"
-
 	"termux-mcp/internal/audit"
 	"termux-mcp/internal/config"
 	"termux-mcp/internal/registry"
@@ -22,12 +20,12 @@ import (
 
 // RegisterAll registers every tool from all modules. Duplicate tool names
 // across modules are treated as a startup error.
-func RegisterAll(r *registry.Registry, cfg *config.Config, al *audit.Logger) error {
+func RegisterAll(r *registry.Registry, cfg *config.Config, al *audit.Logger, mgr *tasks.Manager) error {
 	k := &kit.Kit{
 		Cfg:   cfg,
 		Audit: al,
 		Reg:   r,
-		Tasks: tasks.New(filepath.Join(cfg.Audit.Dir, "tasks"), 8, cfg.Exec.MaxTaskLogBytes),
+		Tasks: mgr,
 	}
 	sets := [][]registry.Tool{
 		device.All(k),

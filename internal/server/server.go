@@ -17,6 +17,7 @@ import (
 	"termux-mcp/internal/auth"
 	"termux-mcp/internal/config"
 	"termux-mcp/internal/registry"
+	"termux-mcp/internal/tasks"
 	"termux-mcp/internal/version"
 )
 
@@ -62,11 +63,12 @@ func RunStdio(s *mcpgo.MCPServer) error {
 }
 
 // RunHTTP serves MCP over Streamable HTTP behind auth and logging middleware.
-func RunHTTP(s *mcpgo.MCPServer, cfg *config.Config) error {
+func RunHTTP(s *mcpgo.MCPServer, cfg *config.Config, mgr *tasks.Manager) error {
 	mcpHandler := mcpgo.NewStreamableHTTPServer(s)
 
 	mux := http.NewServeMux()
 	mux.Handle("/mcp", mcpHandler)
+	mux.Handle("/terminal/stream", TerminalStreamHandler(mgr, mgr.Dir()))
 	mux.HandleFunc("/health", func(w http.ResponseWriter, r *http.Request) {
 		w.Header().Set("Content-Type", "application/json")
 		_ = json.NewEncoder(w).Encode(map[string]any{

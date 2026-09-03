@@ -87,6 +87,9 @@ func New(dir string, maxConcurrent int, maxLogBytes int64) *Manager {
 	return &Manager{dir: dir, maxConcurrent: maxConcurrent, maxLogBytes: maxLogBytes, live: make(map[string]*task)}
 }
 
+// Dir returns the base directory where task state is persisted.
+func (m *Manager) Dir() string { return m.dir }
+
 // Start launches command via sh -c as a detached background task and returns
 // its initial info. The task is NOT tied to the caller's context or the MCP
 // session: it keeps running after the tool call returns.
