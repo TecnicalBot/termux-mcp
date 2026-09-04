@@ -21,8 +21,9 @@ const shellTimeout = 15 * time.Second
 func All(k *kit.Kit) []registry.Tool {
 	return []registry.Tool{
 		{Def: mcp.NewTool("execute_command",
-			mcp.WithDescription("Start a shell command and return its task ID immediately. Stream its live output with the terminal stream endpoint or inspect it with task_status and task_log."),
-			mcp.WithString("command", mcp.Required(), mcp.Description("Shell command to run"))),
+			mcp.WithDescription("Start a shell command as a detached background task and return its task ID immediately. Stream its live output with the terminal stream endpoint or inspect it with task_status and task_log."),
+			mcp.WithString("command", mcp.Required(), mcp.Description("Shell command to run")),
+			mcp.WithString("workdir", mcp.Description("Working directory for the command (default: the server's home)"))),
 			Handler: execute(k),
 			Meta:    registry.Meta{Module: "shell", Tier: registry.TierSafe, Timeout: shellTimeout}},
 	}
@@ -43,7 +44,7 @@ func execute(k *kit.Kit) server.ToolHandlerFunc {
 		if !Allowed(cmd, &k.Cfg.Exec) {
 			return kit.ResultError("command rejected by shell allow/deny policy"), nil
 		}
-		info, err := k.Tasks.Start(cmd, "")
+		info, err := k.Tasks.Start(cmd, kit.StrArg(req, "workdir"))
 		if err != nil {
 			return kit.ResultError("%v", err), nil
 		}
@@ -53,7 +54,7 @@ func execute(k *kit.Kit) server.ToolHandlerFunc {
 
 // Allowed applies the allow/deny regex policy. With no allow patterns the
 // command is rejected (allowlist-only), unless "*" allows everything.
-// Exported so the tasks module applies the exact same policy to run_task.
+// Exported so other modules can apply the exact same shell policy.
 func Allowed(cmd string, ec *config.ExecConfig) bool {
 	for _, d := range ec.ShellDenyPatterns {
 		if ok, _ := regexp.MatchString(d, cmd); ok {

@@ -112,9 +112,9 @@ stdio-only hosts via `mcp-remote`.
 | D. Clipboard & Input | safe          | clipboard get/set, open url, open app                                                                         |
 | E. Files             | sensitive\*   | list/read/write/download/share/media-scan (sandboxed)                                                         |
 | F. UI Automation     | dangerous\*\* | screenshot, ui dump, tap, swipe, text, keyevents                                                              |
-| G. Shell             | dangerous\*\* | execute_command (allowlist-only)                                                                              |
+| G. Shell & Tasks     | safe          | execute_command (launch detached task, optional workdir), task_status, task_log                                          |
 | H. Utility           | safe          | ping, server_status, get_config, list_tools                                                                   |
-| I. Tasks             | dangerous\*\* | run_task, task_status, task_log, stop_task, task_delete (detached, survive restarts)                          |
+| I. Task control      | dangerous\*\* | stop_task, task_delete (terminate/delete running tasks)                                                        |
 
 \* opt-in via `tools.enable_sensitive: true` \
 \*\* opt-in via `tools.enable_dangerous: true` (and allowlists)
@@ -137,7 +137,7 @@ auth:
 
 tools:
   enable_sensitive: false # modules B, C, E
-  enable_dangerous: false # modules F, G, I
+  enable_dangerous: false # modules F, I
 
 exec:
   default_timeout_seconds: 30

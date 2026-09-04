@@ -16,7 +16,7 @@ directory. Copy `config.example.yaml` and `chmod 600`.
 | `auth.token` | *(empty)* | Bearer token; generate with `termux-mcp token new --write` |
 | `auth.require` | `false` | Enforce the token even on loopback |
 | `tools.enable_sensitive` | `false` | Enable modules B, C, E |
-| `tools.enable_dangerous` | `false` | Enable modules F, G |
+| `tools.enable_dangerous` | `false` | Enable modules F, I (UI automation, task control) |
 | `tools.allow` / `tools.deny` | `[]` | Per-tool overrides |
 | `tools.file_roots` | `$HOME`, `/sdcard` | Filesystem sandbox roots |
 | `exec.default_timeout_seconds` | `30` | Per-command timeout |
