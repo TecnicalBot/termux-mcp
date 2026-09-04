@@ -61,3 +61,26 @@ func TestParseTokenArgsEnvConfig(t *testing.T) {
 		t.Fatalf("got (%q, %v, %q), want env config fallback", sub, write, cfgPath)
 	}
 }
+
+func TestRepoSlug(t *testing.T) {
+	cases := map[string]string{
+		"TecnicalBot/termux-mcp":                    "TecnicalBot/termux-mcp",
+		"https://github.com/TecnicalBot/termux-mcp": "TecnicalBot/termux-mcp",
+		"git@github.com:TecnicalBot/termux-mcp.git": "TecnicalBot/termux-mcp",
+		"not-a-repository":                          "",
+	}
+	for input, expected := range cases {
+		if actual := repoSlug(input); actual != expected {
+			t.Errorf("repoSlug(%q) = %q, want %q", input, actual, expected)
+		}
+	}
+}
+
+func TestReleaseArch(t *testing.T) {
+	if arch, err := releaseArch("arm64"); err != nil || arch != "arm64" {
+		t.Fatalf("releaseArch(arm64) = (%q, %v)", arch, err)
+	}
+	if _, err := releaseArch("amd64"); err == nil {
+		t.Fatal("releaseArch(amd64) should reject an unavailable release")
+	}
+}

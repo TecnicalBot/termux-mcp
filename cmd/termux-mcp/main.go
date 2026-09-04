@@ -9,6 +9,7 @@
 //	termux-mcp token rotate          # rotate the token in config
 //	termux-mcp tunnel start          # cloudflared quick tunnel
 //	termux-mcp doctor                # environment diagnostics
+//	termux-mcp update                # install the latest release
 //	termux-mcp version
 package main
 
@@ -61,6 +62,14 @@ func main() {
 	case "version":
 		fmt.Printf("%s %s\n", vpkg.Name, vpkg.Version)
 
+	case "update":
+		fs := flag.NewFlagSet("update", flag.ExitOnError)
+		version := fs.String("version", envOr("TERMUX_MCP_VERSION", ""), "release version to install")
+		_ = fs.Parse(os.Args[2:])
+		if err := runUpdate(*version); err != nil {
+			log.Fatalf("update: %v", err)
+		}
+
 	case "doctor":
 		fs := flag.NewFlagSet("doctor", flag.ExitOnError)
 		cfgPath := fs.String("config", envOr("TERMUX_MCP_CONFIG", ""), "path to config.yaml")
@@ -106,6 +115,7 @@ Usage:
   termux-mcp token rotate                  rotate token in config
   termux-mcp tunnel start [--provider cloudflared]
   termux-mcp doctor                        environment diagnostics
+  termux-mcp update [--version vX.Y.Z]    install a released version
   termux-mcp version`)
 	os.Exit(2)
 }

@@ -5,7 +5,6 @@ package shell
 import (
 	"context"
 	"regexp"
-	"strings"
 	"time"
 
 	"github.com/mark3labs/mcp-go/mcp"
@@ -16,13 +15,13 @@ import (
 	"termux-mcp/internal/tools/kit"
 )
 
-const shellTimeout = 60 * time.Second
+const shellTimeout = 15 * time.Second
 
 // All returns the shell module's tools.
 func All(k *kit.Kit) []registry.Tool {
 	return []registry.Tool{
 		{Def: mcp.NewTool("execute_command",
-			mcp.WithDescription("Run a shell command."),
+			mcp.WithDescription("Start a shell command and return its task ID immediately. Stream its live output with the terminal stream endpoint or inspect it with task_status and task_log."),
 			mcp.WithString("command", mcp.Required(), mcp.Description("Shell command to run"))),
 			Handler: execute(k),
 			Meta:    registry.Meta{Module: "shell", Tier: registry.TierSafe, Timeout: shellTimeout}},
@@ -35,20 +34,20 @@ func execute(k *kit.Kit) server.ToolHandlerFunc {
 		if err != nil {
 			return kit.ResultError("%v", err), nil
 		}
+		if k.Tasks == nil {
+			return kit.ResultError("task manager unavailable"), nil
+		}
 		if !k.Cfg.Exec.ShellAllowed {
 			return kit.ResultError("shell tool is disabled: set exec.shell_allowed=true with allow patterns in config.yaml"), nil
 		}
 		if !Allowed(cmd, &k.Cfg.Exec) {
 			return kit.ResultError("command rejected by shell allow/deny policy"), nil
 		}
-		res, err := k.Run(ctx, "sh", []string{"-c", cmd}, shellTimeout)
+		info, err := k.Tasks.Start(cmd, "")
 		if err != nil {
 			return kit.ResultError("%v", err), nil
 		}
-		if res.ExitCode != 0 {
-			return kit.ResultError("exit %d: %s", res.ExitCode, strings.TrimSpace(res.Stderr)), nil
-		}
-		return kit.ResultText("%s", strings.TrimRight(res.Stdout, "\n")), nil
+		return kit.ResultJSON(info), nil
 	}
 }
 

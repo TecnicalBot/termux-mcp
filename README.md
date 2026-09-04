@@ -47,6 +47,17 @@ termux-mcp doctor        # check environment
 termux-mcp               # serve over stdio (default)
 ```
 
+After installing a released build, update it in place with:
+
+```bash
+termux-mcp update
+# Or install a specific release:
+termux-mcp update --version v0.2.0
+```
+
+The updater downloads the Android arm64 release atomically and restarts the
+supervised `termux-mcp` service when `termux-services` is available.
+
 ## Connecting a client
 
 ### stdio (local, on-device agents)
