@@ -231,3 +231,105 @@ func TestUnknownID(t *testing.T) {
 		t.Fatalf("log: err = %v, want ErrNotFound", err)
 	}
 }
+
+// TestRestartDoesNotReuseTaskIDs is the regression test for stale task output.
+//
+// Task directories outlive the server on purpose, while the in-memory ID counter
+// does not. A restarted server used to start counting from zero again, hand out
+// an ID whose directory still existed, and open its logs with O_APPEND — so
+// task_log returned the previous run's output above the new run's, under a task
+// whose task_status looked perfectly fresh.
+func TestRestartDoesNotReuseTaskIDs(t *testing.T) {
+	dir := t.TempDir()
+
+	before := New(dir, 4, 1<<20)
+	first, err := before.Start("echo output-from-the-first-run", "")
+	if err != nil {
+		t.Fatal(err)
+	}
+	waitState(t, before, first.ID, StateFinished, 5*time.Second)
+
+	// A restart: a brand new Manager over the same persistent directory.
+	after := New(dir, 4, 1<<20)
+	second, err := after.Start("echo output-from-the-second-run", "")
+	if err != nil {
+		t.Fatal(err)
+	}
+	waitState(t, after, second.ID, StateFinished, 5*time.Second)
+
+	if second.ID == first.ID {
+		t.Fatalf("restart reused task id %s, so its log mixes two runs", second.ID)
+	}
+
+	log, err := after.Log(second.ID, "stdout", 0)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if !strings.Contains(log, "output-from-the-second-run") {
+		t.Fatalf("log of %s missing this run's output:\n%s", second.ID, log)
+	}
+	if strings.Contains(log, "output-from-the-first-run") {
+		t.Fatalf("log of %s contains the previous run's stale output:\n%s", second.ID, log)
+	}
+
+	// The older task's log must still exist, intact, and attributed to it.
+	old, err := after.Log(first.ID, "stdout", 0)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if !strings.Contains(old, "output-from-the-first-run") ||
+		strings.Contains(old, "output-from-the-second-run") {
+		t.Fatalf("log of %s is wrong:\n%s", first.ID, old)
+	}
+}
+
+// TestAllocateSkipsIDClaimedAfterNew covers a task directory that appears after
+// the Manager scanned the disk. Allocation must skip that ID rather than adopt
+// its logs, which is the same stale-output failure by a different route.
+func TestAllocateSkipsIDClaimedAfterNew(t *testing.T) {
+	m := New(t.TempDir(), 4, 1<<20)
+
+	taken := "t000001"
+	if err := os.MkdirAll(filepath.Join(m.dir, taken), 0o755); err != nil {
+		t.Fatal(err)
+	}
+
+	info, err := m.Start("echo output-from-the-new-task", "")
+	if err != nil {
+		t.Fatal(err)
+	}
+	if info.ID == taken {
+		t.Fatalf("allocated %s, which was already claimed", taken)
+	}
+	waitState(t, m, info.ID, StateFinished, 5*time.Second)
+
+	log, err := m.Log(info.ID, "stdout", 0)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if !strings.Contains(log, "output-from-the-new-task") {
+		t.Fatalf("log of %s missing this run's output:\n%s", info.ID, log)
+	}
+}
+
+func TestParseTaskID(t *testing.T) {
+	cases := map[string]struct {
+		want int64
+		ok   bool
+	}{
+		"t000001":  {1, true},
+		"t999999":  {999999, true},
+		"t0000123": {123, true},
+		"t":        {0, false},
+		"":         {0, false},
+		"x000001":  {0, false},
+		"task":     {0, false},
+		"t00x001":  {0, false},
+	}
+	for name, want := range cases {
+		got, ok := parseTaskID(name)
+		if ok != want.ok || got != want.want {
+			t.Errorf("parseTaskID(%q) = (%d, %v), want (%d, %v)", name, got, ok, want.want, want.ok)
+		}
+	}
+}

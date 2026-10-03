@@ -17,18 +17,25 @@ import (
 
 const moduleTimeout = 15 * time.Second
 
+// idDesc steers the model away from inventing task ids. Task ids are handed out
+// sequentially and persist across restarts, so a plausible-looking guess often
+// hits a real but unrelated task, and its output then reads as stale output
+// rather than as a bad argument.
+const idDesc = "Task ID exactly as returned by execute_command. Ids are unique " +
+	"for the lifetime of the task store and must never be guessed."
+
 // All returns the tasks module's tools.
 func All(k *kit.Kit) []registry.Tool {
 	return []registry.Tool{
 		{Def: mcp.NewTool("task_status",
 			mcp.WithDescription("Get the current state of a background task (running, finished, failed, stopped, interrupted), its PID, exit code and log paths."),
-			mcp.WithString("id", mcp.Required(), mcp.Description("Task ID, e.g. t000001"))),
+			mcp.WithString("id", mcp.Required(), mcp.Description(idDesc))),
 			Handler: taskStatus(k),
 			Meta:    registry.Meta{Module: "tasks", Tier: registry.TierSafe, Timeout: moduleTimeout}},
 
 		{Def: mcp.NewTool("task_log",
 			mcp.WithDescription("Read the output of a background task (tail). stream: stdout, stderr or all (default all). tail_bytes bounds each stream (default 64 KiB, max is the configured per-stream log cap)."),
-			mcp.WithString("id", mcp.Required(), mcp.Description("Task ID, e.g. t000001")),
+			mcp.WithString("id", mcp.Required(), mcp.Description(idDesc)),
 			mcp.WithString("stream", mcp.Description("stdout | stderr | all (default all)")),
 			mcp.WithNumber("tail_bytes", mcp.Description("Max bytes to return per stream (default 65536)"))),
 			Handler: taskLog(k),
@@ -36,13 +43,13 @@ func All(k *kit.Kit) []registry.Tool {
 
 		{Def: mcp.NewTool("stop_task",
 			mcp.WithDescription("Terminate a running background task: SIGTERM to its process group, escalated to SIGKILL after a grace period."),
-			mcp.WithString("id", mcp.Required(), mcp.Description("Task ID, e.g. t000001"))),
+			mcp.WithString("id", mcp.Required(), mcp.Description(idDesc))),
 			Handler: stopTask(k),
 			Meta:    registry.Meta{Module: "tasks", Tier: registry.TierDangerous, Timeout: moduleTimeout}},
 
 		{Def: mcp.NewTool("task_delete",
 			mcp.WithDescription("Delete a finished task and its logs. Running tasks must be stopped first."),
-			mcp.WithString("id", mcp.Required(), mcp.Description("Task ID, e.g. t000001"))),
+			mcp.WithString("id", mcp.Required(), mcp.Description(idDesc))),
 			Handler: taskDelete(k),
 			Meta:    registry.Meta{Module: "tasks", Tier: registry.TierDangerous, Timeout: moduleTimeout}},
 	}

@@ -18,6 +18,7 @@ import (
 	"os/exec"
 	"path/filepath"
 	"sort"
+	"strconv"
 	"strings"
 	"sync"
 	"syscall"
@@ -84,7 +85,38 @@ func New(dir string, maxConcurrent int, maxLogBytes int64) *Manager {
 	if dir == "" {
 		dir = os.TempDir()
 	}
-	return &Manager{dir: dir, maxConcurrent: maxConcurrent, maxLogBytes: maxLogBytes, live: make(map[string]*task)}
+	m := &Manager{dir: dir, maxConcurrent: maxConcurrent, maxLogBytes: maxLogBytes, live: make(map[string]*task)}
+	// Task directories deliberately outlive this process (see config.defaultDataDir),
+	// but the ID counter does not, so it has to be seeded from what is on disk.
+	// Reusing an ID would make the new task append to the previous one's logs,
+	// and task_log would then report the old run's output as this run's.
+	m.seq = highestExistingID(dir)
+	return m
+}
+
+// highestExistingID returns the largest task number already persisted in dir,
+// or 0 when the directory is empty, absent or unreadable.
+func highestExistingID(dir string) int64 {
+	entries, err := os.ReadDir(dir)
+	if err != nil {
+		return 0
+	}
+	var max int64
+	for _, e := range entries {
+		if n, ok := parseTaskID(e.Name()); ok && n > max {
+			max = n
+		}
+	}
+	return max
+}
+
+// parseTaskID decodes the numeric suffix of a "tNNNNNN" task directory name.
+func parseTaskID(name string) (int64, bool) {
+	if len(name) < 2 || name[0] != 't' {
+		return 0, false
+	}
+	n, err := strconv.ParseInt(name[1:], 10, 64)
+	return n, err == nil
 }
 
 // Dir returns the base directory where task state is persisted.
@@ -103,9 +135,11 @@ func (m *Manager) Start(command, workdir string) (TaskInfo, error) {
 		m.mu.Unlock()
 		return TaskInfo{}, fmt.Errorf("task limit reached (%d running); stop or delete a task first", m.maxConcurrent)
 	}
-	m.seq++
-	id := fmt.Sprintf("t%06d", m.seq)
-	tdir := filepath.Join(m.dir, id)
+	id, tdir, err := m.allocateLocked()
+	if err != nil {
+		m.mu.Unlock()
+		return TaskInfo{}, err
+	}
 	t := &task{info: TaskInfo{
 		ID:        id,
 		Command:   command,
@@ -117,17 +151,12 @@ func (m *Manager) Start(command, workdir string) (TaskInfo, error) {
 	m.live[id] = t
 	m.mu.Unlock()
 
-	// Create the task dir and log files.
-	if err := os.MkdirAll(tdir, 0o755); err != nil {
-		m.failStart(id, tdir)
-		return TaskInfo{}, fmt.Errorf("create task dir: %w", err)
-	}
-	outF, err := os.OpenFile(filepath.Join(tdir, "stdout.log"), os.O_CREATE|os.O_WRONLY|os.O_APPEND, 0o644)
+	outF, err := os.OpenFile(filepath.Join(tdir, "stdout.log"), os.O_CREATE|os.O_WRONLY|os.O_TRUNC, 0o644)
 	if err != nil {
 		m.failStart(id, tdir)
 		return TaskInfo{}, err
 	}
-	errF, err := os.OpenFile(filepath.Join(tdir, "stderr.log"), os.O_CREATE|os.O_WRONLY|os.O_APPEND, 0o644)
+	errF, err := os.OpenFile(filepath.Join(tdir, "stderr.log"), os.O_CREATE|os.O_WRONLY|os.O_TRUNC, 0o644)
 	if err != nil {
 		_ = outF.Close()
 		m.failStart(id, tdir)
@@ -165,6 +194,42 @@ func (m *Manager) failStart(id, tdir string) {
 	delete(m.live, id)
 	m.mu.Unlock()
 	_ = os.RemoveAll(tdir)
+}
+
+// maxIDAttempts bounds the search for a free task ID. Seeding the counter from
+// disk means the first candidate is normally free, so this only matters when
+// another server process is writing into the same directory.
+const maxIDAttempts = 1000
+
+// allocateLocked reserves the next unused task ID and creates its directory.
+// Callers must hold m.mu.
+//
+// The directory is created here rather than after unlocking so that claiming an
+// ID is a single atomic mkdir. Anything else leaves a window in which a restart
+// can hand out an ID whose logs still hold an earlier run's output, and
+// task_log has no way to tell the two apart.
+func (m *Manager) allocateLocked() (string, string, error) {
+	if err := os.MkdirAll(m.dir, 0o755); err != nil {
+		return "", "", fmt.Errorf("create task dir: %w", err)
+	}
+
+	for attempt := 0; attempt < maxIDAttempts; attempt++ {
+		m.seq++
+		id := fmt.Sprintf("t%06d", m.seq)
+		tdir := filepath.Join(m.dir, id)
+
+		err := os.Mkdir(tdir, 0o755)
+		if err == nil {
+			return id, tdir, nil
+		}
+		if !os.IsExist(err) {
+			return "", "", fmt.Errorf("create task dir: %w", err)
+		}
+		// Already claimed by a task New's scan did not see. Try the next ID
+		// rather than reusing it: its logs belong to somebody else.
+	}
+
+	return "", "", fmt.Errorf("no free task id under %s after %d attempts", m.dir, maxIDAttempts)
 }
 
 // reap waits for the process, finalizes state, and persists it.
